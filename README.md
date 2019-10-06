@@ -1,6 +1,93 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# crius-react-example
 
-## Available Scripts
+## Tutorial
+
+1. Create project with `create-react-app`:
+
+```sh
+npx create-react-app crius-react-example
+```
+
+2. Eject project run `yarn eject`
+
+3. Install `crius-test`, `babel-preset-crius` & other dependent package:
+
+```sh
+yarn add babel-preset-crius crius-test enzyme enzyme-adapter-react-16
+```
+
+4. Create babel jest config `babel-jest.js`:
+
+```js
+module.exports = require('babel-jest').createTransformer({
+  "presets": [
+    ["@babel/preset-env"],
+    ["babel-preset-crius"]
+  ],
+  "plugins": [
+    ["@babel/plugin-proposal-decorators", { "legacy": true }]
+  ]
+});
+```
+
+5. Replace `transform` about `jest` config:
+
+```json
+{
+  "^.+\\.(js|jsx|ts|tsx)$": "<rootDir>/babel-jest.js",
+  //omit other default config.
+}
+```
+
+6. Coding with `crius` for testing in `App.test.js`:
+
+```jsx
+/* eslint-disable react/react-in-jsx-scope */
+import { transformFileSync } from '@babel/core';
+import Enzyme, { mount as enzymeMount  } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+import {
+  autorun,
+  title,
+  Step,
+  Scenario,
+  Given,
+  When,
+  Then
+} from 'crius-test';
+
+Enzyme.configure({ adapter: new Adapter() });
+
+const mount = (path) => enzymeMount(require('React').createElement(eval(transformFileSync(path).code)));
+
+@autorun(test)
+@title('Test user add todo item')
+class Example extends Step {
+  run() {
+    return (
+      <Scenario desc='user login website' action={Bar}>
+        <Given desc='user navigate to list page' />
+        <When desc='user type "read book" in input field and click "add" button' />
+        <Then desc='user should see "read book" todo item in todo list' />
+      </Scenario>
+    )
+  }
+}
+
+class Bar extends Step {
+  run() {
+    const wrapper = mount('./src/App.js');
+    expect(wrapper.text()).toEqual("Edit src/App.js and save to reload.Learn React");
+  }
+}
+
+```
+
+---
+
+### Available Scripts from `Create React App`
+
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 In the project directory, you can run:
 
