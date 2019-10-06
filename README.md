@@ -30,7 +30,7 @@ module.exports = require('babel-jest').createTransformer({
 });
 ```
 
-5. Replace `transform` about `jest` config:
+5. Replace `transform` about `jest` config in `package.json`:
 
 ```json
 {
