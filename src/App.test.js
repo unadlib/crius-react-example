@@ -11,10 +11,9 @@ import {
   When,
   Then
 } from 'crius-test';
+import { mount } from './lib';
 
 Enzyme.configure({ adapter: new Adapter() });
-
-const mount = (path) => enzymeMount(require('React').createElement(eval(transformFileSync(path).code)));
 
 @autorun(test)
 @title('Test user add todo item')
@@ -32,7 +31,7 @@ class Example extends Step {
 
 class Bar extends Step {
   run() {
-    const wrapper = mount('./src/App.js');
+    const wrapper = eval(mount('./src/App.js'));
     expect(wrapper.text()).toEqual("Edit src/App.js and save to reload.Learn React");
   }
 }
