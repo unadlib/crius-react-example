@@ -1,9 +1,10 @@
 module.exports = require('babel-jest').createTransformer({
-  "presets": [
-    ["@babel/preset-env"],
-    ["babel-preset-crius"]
+  presets: [
+    ['@babel/preset-env'],
+    ['babel-preset-crius']
   ],
-  "plugins": [
-    ["@babel/plugin-proposal-decorators", { "legacy": true }]
-  ]
+  plugins: [
+    ['@babel/plugin-proposal-decorators', { legacy: true }]
+  ],
+  test: './test'
 });

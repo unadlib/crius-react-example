@@ -1,6 +1,6 @@
 /* eslint-disable react/react-in-jsx-scope */
-import { transformFileSync } from '@babel/core';
-import Enzyme, { mount as enzymeMount  } from 'enzyme';
+import Enzyme, { mount  } from 'enzyme';
+import React from 'react';
 import Adapter from 'enzyme-adapter-react-16';
 import {
   autorun,
@@ -11,7 +11,7 @@ import {
   When,
   Then
 } from 'crius-test';
-import { mount } from './lib';
+import App from '../src/App';
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -31,7 +31,7 @@ class Example extends Step {
 
 class Bar extends Step {
   run() {
-    const wrapper = eval(mount('./src/App.js'));
+    const wrapper = mount(React.createElement(App));
     expect(wrapper.text()).toEqual("Edit src/App.js and save to reload.Learn React");
   }
 }
