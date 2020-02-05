@@ -26,25 +26,29 @@ module.exports = require('babel-jest').createTransformer({
   ],
   "plugins": [
     ["@babel/plugin-proposal-decorators", { "legacy": true }]
-  ]
+  ],
+  "test": "./test"
 });
 ```
 
-5. Replace `transform` about `jest` config in `package.json`:
+5. Replace `transform` about `jest` config in `package.json`, remove `testMatch` feild and change `roots` value to `<rootDir>/test`:
 
 ```json
 {
+  "roots": [
+    "<rootDir>/test"
+  ]
   "^.+\\.(js|jsx|ts|tsx)$": "<rootDir>/babel-jest.js",
   //omit other default config.
 }
 ```
 
-6. Coding with `crius` for testing in `App.test.js`:
+6. Coding with `crius` for testing in `index.test.js` in `test` folder:
 
 ```jsx
 /* eslint-disable react/react-in-jsx-scope */
-import { transformFileSync } from '@babel/core';
-import Enzyme, { mount as enzymeMount  } from 'enzyme';
+import Enzyme, { mount  } from 'enzyme';
+import React from 'react';
 import Adapter from 'enzyme-adapter-react-16';
 import {
   autorun,
@@ -55,10 +59,9 @@ import {
   When,
   Then
 } from 'crius-test';
+import App from '../src/App';
 
 Enzyme.configure({ adapter: new Adapter() });
-
-const mount = (path) => enzymeMount(require('React').createElement(eval(transformFileSync(path).code)));
 
 @autorun(test)
 @title('Test user add todo item')
@@ -76,7 +79,7 @@ class Example extends Step {
 
 class Bar extends Step {
   run() {
-    const wrapper = mount('./src/App.js');
+    const wrapper = mount(React.createElement(App));
     expect(wrapper.text()).toEqual("Edit src/App.js and save to reload.Learn React");
   }
 }
